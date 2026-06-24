@@ -4,7 +4,7 @@ An enterprise-grade, highly interactive heavy machinery rental and logistics pla
 
 ---
 
-## 🛠️ Technology Stack & Badges
+## Technology Stack & Badges
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
@@ -30,7 +30,7 @@ An enterprise-grade, highly interactive heavy machinery rental and logistics pla
 
 ---
 
-## 📁 Project Directory Structure
+## Project Directory Structure
 
 ```text
 ├── public/                 # Static assets (Favicons, Logo, background images)
@@ -60,7 +60,7 @@ An enterprise-grade, highly interactive heavy machinery rental and logistics pla
 
 ---
 
-## 💻 Local Installation & Setup
+## Local Installation & Setup
 
 1.  **Clone the Repository**:
     ```bash
@@ -87,6 +87,6 @@ An enterprise-grade, highly interactive heavy machinery rental and logistics pla
 
 ---
 
-## 🌐 Deployment Configuration
+## Deployment Configuration
 
 This site is optimized for deployment on **Vercel** or **Netlify**. Since it utilizes clean URLs using React Router `BrowserRouter` (removing the `#`), the repository includes a custom [vercel.json](file:///c:/Users/HP/Desktop/British%20Transport%20LLC/vercel.json) configuration mapping all route paths back to `index.html` to avoid 404 issues on manual page reloads in production.
