@@ -169,7 +169,7 @@ export default function Home() {
       <section className="relative h-[90vh] min-h-[600px] flex items-center justify-start overflow-hidden pt-20 md:pt-24 pb-28 md:pb-36">
         <div 
           className="absolute inset-0 bg-cover bg-center" 
-          style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCUCt6mie6hjd1HjB9r88eLpkiw4sD-GPR1QyCt9-5NDMYf247zYKNg22sLiEuwKsK1hjaHnsXRJsNTgkZ4L7x2A7XSmskP1dKMXyxbeRgg3wkq13rAWob4w0BQsSVo964NIXqPXkr1yXcKd65CZ8OH1ITmOdsQs-QkgSiMP7mrg-KiL51h2WA-Vc9vmSEPlKnZwoe8Hi2CuUM7JRaV9983AAbtM52x9TMuwZCaDSW4OPkwmGLcuYfyfCLyzfdOoXfiTDY0T35W6g')" }}
+          style={{ backgroundImage: "url('/hero_section_bg.png')" }}
         ></div>
         <div className="absolute inset-0 hero-gradient"></div>
         <div className="relative z-10 px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto w-full">
