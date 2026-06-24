@@ -1,25 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Home() {
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const brandLogos = ['VOLVO', 'CATERPILLAR', 'KOMATSU', 'SANY', 'LIEBHERR'];
+
+  const [activeTab, setActiveTab] = useState('Earthmoving');
 
   const featuredFleet = [
     {
-      name: "Motor Grader 140K",
-      power: "170 HP",
-      width: "3.7 m",
-      weight: "17,500 KG",
-      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDYXenxlkX_EHJ4CsJqZeSSYMwEMQsDHNypP0W5IOid-f7xofR1vWecFmQmF1hjRX_PB7rdIgU-EdB2IOpiNdUmN31yOCYp3zdI3tOQG-G5K3MXKCiyh6HekIrIMDsbA0t-sIV3_X7iWCt-ONBfaAwJh1qThfqQOrdX__MSp4vMEYq57heaum20DGzluMmHCrtmn13ROYWZ0c0O6LO_YIIgwgOz5gCx2agTIWm9AclqWXHw5fxUGluZoN4ZTr_Aogij-pQHr-_UqA"
+      name: "Sany SY500H Large Excavator",
+      power: "300 kW",
+      width: "7,700 mm depth",
+      weight: "52,500 kg",
+      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCmH2BNfC2bcoYQQaQBvJ9x5hA-h_QMmLAA5evCnY_JX4CgeGkuZMCsiWcSeYnnbnT3Jrj22prT6HsiHEti-xsWpNm_EQ-V4dGab2xk7nESeTGiqRy0kefUYkS8085nYksDUEZWQLI09z0910HqJh38oGK9vxanewSdEEHMgg3KRwZzLnipbAH--5ooMTMmBe8DOFkdpDkrqKYicntcAVB-0-cRsWnUTqDS-2xJ9Vw1Ec7M98DxcfYGJl1oRuRp50YlAHsnHOZXEQ",
+      category: "Earthmoving"
+    },
+    {
+      name: "CAT D11 Crawler Dozer",
+      power: "634 kW",
+      width: "27.2 m³ blade",
+      weight: "106,614 kg",
+      img: "/images/fleet/caterpillar_cat_d11_crawler_dozer.jpg",
+      category: "Earthmoving"
     },
     {
       name: "Vibratory Roller CS54B",
       power: "Tier 4 Final",
-      width: "2.1 m",
+      width: "2.1 m drum",
       weight: "10,500 KG",
-      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuB6GpxFmAVSfrA9Uhd0t6z82VwUt7do-O1NjwXKxhsA9e7p582ntUY9PPpBBSa2kKivU-kGgLv1ggUiUVUBd8lUIG8jSoBwig0xYrL0ty-XVINq5DcYeJIbFqlA64LJe_rAiEqRTZ4SSWqAgkJpuPhhVSYCMmZC6zgH-RvtqDedqGWr7MFmC38-qJNnGrcBygMHElE7JTjQmhHPqwpdSUaBaiTKmRBMP7wYzj_X2rU9dn74s5-1mstiQYg1YxVMe0wY3pZkSOt3xg"
+      img: "/images/fleet/caterpillar_vibratory_roller_cs54b.jpg",
+      category: "Compaction"
+    },
+    {
+      name: "Hamm 3411 Soil Compactor (Roller)",
+      power: "100 kW",
+      width: "2,140 mm drum",
+      weight: "11,310 kg",
+      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCyA3RPRWnfWAT5XXgvYSEIIjuwJTzfEHojmY_rUsPkA2ipVDb1cJl-nUVSGeMEH5hsqVrxS0Zys9WQXCn7XK1qY55mVI8Jslc54_YRf8cL2nwvzakwNLT6cImbi-bQJPNyo2BoUyoZPy8tOlUiUaUqM1pfnHwswNXmo0_CyYXFlKQrr0fpxRZ2Di3aSmpdxfM-QXhcDTrnAfX1nbZhRqeiIv29GPIkgSwtx0bnkb-5kN_h5Z89PZk6tZPwed9p-AcIroRaey44fw",
+      category: "Compaction"
+    },
+    {
+      name: "CAT MH3040 Material Handler",
+      power: "40 Tons cap.",
+      width: "15.4 m reach",
+      weight: "38,500 kg",
+      img: "/images/fleet/caterpillar_cat_mh3040_material_handler_crane.jpg",
+      category: "Logistics"
+    },
+    {
+      name: "Volvo A40G Articulated Hauler",
+      power: "39,000 kg pay.",
+      width: "24 m³ volume",
+      weight: "30,100 kg",
+      img: "/images/fleet/volvo_a40.jpg",
+      category: "Logistics"
     }
   ];
+
+  const filteredFeaturedFleet = featuredFleet.filter(item => item.category === activeTab);
 
   const industries = [
     {
@@ -49,11 +88,36 @@ export default function Home() {
   ];
 
   const projects = [
-    { name: "EXPO 2020 SITE PREP", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAeNa8MgeBgudXcGUbXIi5dIfshrXb01hVHGKEccry1ZwQxfoiAajgrh1g8Eu-ffepGOg86kqViDT5qoUs5v9JRiobGpAkJO_RbJUVY4Bd8Ga-19CZ38xNA0Q-5n4eYYs92YskGZxWGj1ZTHPOcq5xLFSUINAgwkw3xVg3bICx-6R_-71wyy-uJHZFpzxSaK5xtAR1CZWv_pvXzNDjygwiR-Du2Ggvv8n-t5f6eHLumqNhNtSeLfj38GAVaLPvOSIro3yw9sT_OaA" },
-    { name: "DUBAI MALL EXPANSION", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuC0ffqypbnJEMFa7AK2CLpGDx5NgrH4suYpY3dtAdO-rdIwUUr3HfGBGwjEpNWNlkYako4aAAmFwR6ngDdQieI1q7j64CjVreNabyn-FXZKd5J7zf8umYtQS5FaImBw78FDOyhNvCrQ-h4wVnb1oEOlYoxvYByJsoBeWVLdb8nk86bfhaZdEdq1GL2ehkHclNvaeWYJrtj-Z8iGAsv3DhOic_bLL-k-fXVyqJ5MimgbqNms-CiQa1PFwvhAP_kEvDbNmSgvYN7AHQ" },
-    { name: "ZAYED SPORTS CITY UPGRADE", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCZytJflXswxIjfpMF7dTgeKdAlg2maOc-OYnfwPiAEhRw8G0-wtNWqA0DmCj4Y7RwV2UsLQnhnpqZwq-9M0sdoxkPYITTjWOoGIoRS1Dt9PT-2ITUpKLOb0QySFoud8prj4FJ5AuVBxTe9_exNyrQ9Mpk_d66Pj8sex2y2anu-MUgiXPxmr-aWOuwgcZMXOAX9EjavyJ5sMgrQuXl5mZaGExnz38bpL2jMod1QJJd5MERLK83lCoXnocQSp6Mqn0f8BVE7bhPY0Q" },
-    { name: "KHALIFA PORT LOGISTICS", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuChytACi07syjKCYNxN8PBilP92o7KBbZONG6KNjaAtFV2y_wRHIWY9QtS8zmpYl4svYEtGdSdH2sEGlUAiapQm9ehgxVLq_QKXrWOoy6OECZNw8A_w1ATHyhKc1glErPPM6vD2uClzmkp1XXv21-nxFplqJXwORSyIb-VyfnoKXtq6dG6teD_L45KH3atXNYbzGzIgIm_MTbrktFqOKu-bq0l60njI-zG0lPEwV-jZzFPlK5zCObraWWc8DDLwTxQl60o939HJQA" },
-    { name: "EMAAR BEACHFRONT FOUNDATIONS", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAviKes8cfSlTFftLmRnOoGvqxm6ASxZQyAhnV7zcBwOaNkzkBd1kOguaLHNw8xEx0ySCBIJ4VGiBogKnlJoDbuGioqXL72EKsfoUaS2nhpbPtdwlEKlNOZpElDXRBblhfnFTAgTSdlqiGZ_hHuiIvRjavbkTK6ttHeDOr5JrYuRy602qF-brHtvmTa4EvTmBemQlxJASy48ouERvzqnPB5hbsK_qf-ouzZVaamusV-0NC27HHvfnh7DxkGrRxQz3zyGcDvPoGMQg" }
+    { 
+      name: "Expo 2020 Dubai Site Prep", 
+      category: "Infrastructure",
+      desc: "Massive earthmoving and grading for the Expo plaza and pavilions.",
+      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAeNa8MgeBgudXcGUbXIi5dIfshrXb01hVHGKEccry1ZwQxfoiAajgrh1g8Eu-ffepGOg86kqViDT5qoUs5v9JRiobGpAkJO_RbJUVY4Bd8Ga-19CZ38xNA0Q-5n4eYYs92YskGZxWGj1ZTHPOcq5xLFSUINAgwkw3xVg3bICx-6R_-71wyy-uJHZFpzxSaK5xtAR1CZWv_pvXzNDjygwiR-Du2Ggvv8n-t5f6eHLumqNhNtSeLfj38GAVaLPvOSIro3yw9sT_OaA" 
+    },
+    { 
+      name: "Dubai Mall Expansion", 
+      category: "Commercial",
+      desc: "Precision excavation adjacent to active retail and transit zones.",
+      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuC0ffqypbnJEMFa7AK2CLpGDx5NgrH4suYpY3dtAdO-rdIwUUr3HfGBGwjEpNWNlkYako4aAAmFwR6ngDdQieI1q7j64CjVreNabyn-FXZKd5J7zf8umYtQS5FaImBw78FDOyhNvCrQ-h4wVnb1oEOlYoxvYByJsoBeWVLdb8nk86bfhaZdEdq1GL2ehkHclNvaeWYJrtj-Z8iGAsv3DhOic_bLL-k-fXVyqJ5MimgbqNms-CiQa1PFwvhAP_kEvDbNmSgvYN7AHQ" 
+    },
+    { 
+      name: "Zayed Sports City Upgrade", 
+      category: "Sports Infrastructure",
+      desc: "Earthworks and logistics grading for stadium expansion.",
+      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCZytJflXswxIjfpMF7dTgeKdAlg2maOc-OYnfwPiAEhRw8G0-wtNWqA0DmCj4Y7RwV2UsLQnhnpqZwq-9M0sdoxkPYITTjWOoGIoRS1Dt9PT-2ITUpKLOb0QySFoud8prj4FJ5AuVBxTe9_exNyrQ9Mpk_d66Pj8sex2y2anu-MUgiXPxmr-aWOuwgcZMXOAX9EjavyJ5sMgrQuXl5mZaGExnz38bpL2jMod1QJJd5MERLK83lCoXnocQSp6Mqn0f8BVE7bhPY0Q" 
+    },
+    { 
+      name: "Khalifa Port Logistics", 
+      category: "Logistics Hub",
+      desc: "Ground prep and machinery transport support for port expansion.",
+      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuChytACi07syjKCYNxN8PBilP92o7KBbZONG6KNjaAtFV2y_wRHIWY9QtS8zmpYl4svYEtGdSdH2sEGlUAiapQm9ehgxVLq_QKXrWOoy6OECZNw8A_w1ATHyhKc1glErPPM6vD2uClzmkp1XXv21-nxFplqJXwORSyIb-VyfnoKXtq6dG6teD_L45KH3atXNYbzGzIgIm_MTbrktFqOKu-bq0l60njI-zG0lPEwV-jZzFPlK5zCObraWWc8DDLwTxQl60o939HJQA" 
+    },
+    { 
+      name: "Emaar Beachfront Foundations", 
+      category: "Residential Foundations",
+      desc: "Excavation and shoring support for luxury seaside residential towers.",
+      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAviKes8cfSlTFftLmRnOoGvqxm6ASxZQyAhnV7zcBwOaNkzkBd1kOguaLHNw8xEx0ySCBIJ4VGiBogKnlJoDbuGioqXL72EKsfoUaS2nhpbPtdwlEKlNOZpElDXRBblhfnFTAgTSdlqiGZ_hHuiIvRjavbkTK6ttHeDOr5JrYuRy602qF-brHtvmTa4EvTmBemQlxJASy48ouERvzqnPB5hbsK_qf-ouzZVaamusV-0NC27HHvfnh7DxkGrRxQz3zyGcDvPoGMQg" 
+    }
   ];
 
   const testimonials = [
@@ -74,32 +138,29 @@ export default function Home() {
       role: "CEO, Desert Foundations",
       review: "Transparent pricing and machines that actually perform. The SANY excavators we rented handled the rocky terrain of Ras Al Khaimah with ease.",
       initials: "KI"
+    },
+    {
+      name: "Fatima Al Suwaidi",
+      role: "Logistics Specialist, Aldar Properties",
+      review: "British Transport has been our go-to partner for Abu Dhabi developments. Their fleet reliability and operator professionalism are top-tier.",
+      initials: "FS"
+    },
+    {
+      name: "Marcus Aurelius",
+      role: "Project Manager, Emaar",
+      review: "Excellent communication, competitive rates, and top-tier safety compliance. The machinery arrived fully certified and ready for immediate operation.",
+      initials: "MA"
     }
   ];
 
-  const blogPosts = [
-    {
-      category: "Maintenance",
-      readTime: "5 min read",
-      title: "PREVENT EQUIPMENT DOWNTIME WITH A SIMPLE PREVENTIVE MAINTENANCE CHECKLIST",
-      desc: "Learn the critical daily inspections needed to keep your fleet running in the harsh UAE climate.",
-      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCWITfAWMfcRwhkcfBLKPsgFUzM2z0pNWExYx-ePPqg1Osx5nFjNX0o62INr9hcjpzcHK8NjHozYxoItnTBbxOL5d9Cud9Wwlslh8GPWE-RYfASOVtYLTqFIL58wYO-vjLaZeRlh6ajVd8J8Xll52KBUY4yv18neULaQ8sWoBMxwXVAhc5Ud_hgIKj0XqdCYFdthoHkB0YPtzvbwjkReFx48di2S4MON6aFSKeICx8gUV5vNwLkkPmJSzfn3yx_zv-5NmAN8-3jrQ"
-    },
-    {
-      category: "Selection",
-      readTime: "7 min read",
-      title: "HOW TO CHOOSE THE RIGHT MACHINE SIZE FOR YOUR SPECIFIC JOB SITE",
-      desc: "A comprehensive guide on balancing power, efficiency, and maneuverability for different project types.",
-      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCd8XNVP8CkFKpAYl6djqqmQA8VgSfbjFA3z5_q-5S-Kl94ZbI-8ff8cCSHQMnwi_q-gytvNjQ4QanP32MydB2i6is1hKQqHGJtdCeJiyOH3m3vwVMQSEEL_WaqtzQmSzbb9SL9pdxQ785CypWkdwpIQII5SgM_qbH6SUKM8WKw9mOaTg-2Yg0KnbsJT4uVS5BBWZ5_xbvv6DRKJzaF0sQu6TZbMdjD15gqqMx9qHTTAXRwpsw3bQ8V9x2Y-ZzDw80lvWjCyeVTlg"
-    },
-    {
-      category: "Safety",
-      readTime: "4 min read",
-      title: "NEW HEAVY EQUIPMENT SAFETY STANDARDS EVERY OPERATOR SHOULD KNOW",
-      desc: "Stay compliant with the latest UAE safety regulations to ensure a zero-accident job site.",
-      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuC8MJovfERmUeEnDHuGPLmyT7-bLD1W2IClkZc0Jw2MpICH6mYomuZSsI672jMcJNO4HsSD-SocUXpOC6HT4yqywvzbl4YlGadwL8SJHQpK_54UTGOxt4fPUmFsTRUlMS7XEDIoiff4mLzmApfLiYrXtpeVTThf9XP1rFfg-lKvfUVUx5hpay41JG_vq2qR7Zaex-Z63CmrewDNhbzBklxa9zDT1iOWqR7UdFFAl_Err8g2yaHgVy6DCyM6I0JtOBUU1OhxbYw1_g"
-    }
-  ];
+  const handlePrevTestimonial = () => {
+    setCurrentTestimonial(prev => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
+  const handleNextTestimonial = () => {
+    setCurrentTestimonial(prev => (prev + 1) % testimonials.length);
+  };
+
 
   return (
     <div>
@@ -151,15 +212,25 @@ export default function Home() {
               EQUIPMENT BUILT FOR<br />DEMANDING JOB SITES
             </h2>
           </div>
-          <div className="flex bg-surface-container p-1 rounded-none overflow-x-auto no-scrollbar">
-            <span className="px-6 py-2 bg-primary-container text-on-primary-container font-label-bold uppercase cursor-pointer">Earthmoving</span>
-            <span className="px-6 py-2 hover:bg-surface-container-high transition-colors font-label-bold uppercase cursor-pointer">Compaction</span>
-            <span className="px-6 py-2 hover:bg-surface-container-high transition-colors font-label-bold uppercase cursor-pointer">Logistics</span>
+          <div className="flex flex-wrap bg-surface-container p-1 rounded-none justify-start gap-1 w-fit">
+            {['Earthmoving', 'Compaction', 'Logistics'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-6 py-2 font-label-bold uppercase cursor-pointer transition-colors duration-300 ${
+                  activeTab === tab
+                    ? 'bg-primary-container text-on-primary-container font-bold'
+                    : 'text-on-surface hover:bg-surface-container-high'
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
-          {featuredFleet.map((item) => (
+          {filteredFeaturedFleet.map((item) => (
             <div key={item.name} className="border border-outline-variant bg-surface-container-lowest group transition-all hover:border-primary">
               <div className="h-64 overflow-hidden relative">
                 <img 
@@ -174,7 +245,7 @@ export default function Home() {
                   <span className="font-label-sm text-label-sm text-secondary uppercase leading-normal">Power / Rating</span>
                   <span className="font-label-bold text-label-bold text-on-surface text-right uppercase leading-normal">{item.power}</span>
                   <span className="font-label-sm text-label-sm text-secondary uppercase leading-normal">Dimension / Size</span>
-                  <span className="font-label-bold text-label-bold text-on-surface text-right uppercase leading-normal">{item.width}</span>
+                  <span className="font-label-bold text-label-bold text-on-surface text-right uppercase leading-normal">{item.width || item.depth}</span>
                   <span className="font-label-sm text-label-sm text-secondary uppercase leading-normal">Operating Weight</span>
                   <span className="font-label-bold text-label-bold text-on-surface text-right uppercase leading-normal">{item.weight}</span>
                 </div>
@@ -230,7 +301,7 @@ export default function Home() {
       {/* Trust & Stats */}
       <section className="relative py-section-gap overflow-hidden">
         <div className="relative z-10 px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto text-center">
-          <h2 className="font-display-xl text-5xl md:text-8xl uppercase tracking-tighter mb-stack-md font-black">BUILT ON TRUST</h2>
+          <h2 className="font-display-xl text-5xl md:text-8xl uppercase tracking-tight mb-stack-md font-black">BUILT ON TRUST</h2>
           <p className="font-body-lg text-lg max-w-2xl mx-auto mb-20 text-secondary">
             Operating in Dubai, Abu Dhabi, and Northern Emirates. With over 20 years of experience, British Transport has become the backbone of road works and infrastructure, delivering reliability when it matters most.
           </p>
@@ -257,87 +328,104 @@ export default function Home() {
 
       {/* Notable Projects */}
       <section className="py-section-gap bg-surface-container-low">
-        <div className="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto">
-          <h2 className="font-headline-lg text-3xl sm:text-5xl uppercase mb-16 text-center font-bold">PROJECTS WE'VE POWERED</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-stack-md">
+        <div className="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto space-y-12">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end">
+            <div>
+              <p className="text-primary font-label-bold uppercase mb-2">Proven Track Record</p>
+              <h2 className="font-headline-lg text-3xl sm:text-5xl uppercase font-bold">PROJECTS WE'VE POWERED</h2>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-stack-md">
             {projects.map((proj) => (
-              <div key={proj.name} className="group relative h-80 overflow-hidden border border-outline-variant">
+              <div key={proj.name} className="group relative h-96 overflow-hidden border border-outline-variant">
                 <img 
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
                   src={proj.img} 
                   alt={proj.name} 
                 />
-                <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className="text-white font-label-bold uppercase text-center px-4 text-xs tracking-wider">{proj.name}</span>
+                {/* Persistent Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10"></div>
+                
+                {/* Overlay Text Content */}
+                <div className="absolute inset-0 p-6 flex flex-col justify-end z-20">
+                  <span className="text-primary-container font-label-bold text-xs uppercase tracking-wider block mb-1">
+                    {proj.category}
+                  </span>
+                  <h3 className="text-white font-headline-sm text-lg sm:text-xl uppercase font-bold leading-tight">
+                    {proj.name}
+                  </h3>
+                  
+                  {/* Slide-up Description on Hover */}
+                  <div className="max-h-0 overflow-hidden group-hover:max-h-24 transition-all duration-500 ease-in-out">
+                    <p className="text-white/70 font-body-md text-xs mt-3 leading-relaxed">
+                      {proj.desc}
+                    </p>
+                  </div>
                 </div>
               </div>
             ))}
+          </div>
+          <div className="flex justify-end pt-4">
+            <Link to="/projects" className="relative z-10 w-full md:w-auto px-8 py-4 bg-primary-container text-on-primary-container font-headline-sm uppercase hover:brightness-110 transition-all flex items-center justify-center gap-2 font-bold">
+              Browse All Projects
+              <span className="material-symbols-outlined">arrow_forward</span>
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Testimonials */}
       <section className="py-section-gap px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto">
-        <div className="text-center mb-16">
+        <div className="flex justify-between items-center mb-16">
           <h2 className="font-headline-lg text-3xl sm:text-5xl uppercase font-bold">WHAT OUR PARTNERS SAY</h2>
+          <div className="flex gap-2">
+            <button 
+              onClick={handlePrevTestimonial}
+              className="w-12 h-12 border border-outline-variant hover:bg-primary hover:text-on-primary transition-all flex items-center justify-center cursor-pointer"
+              aria-label="Previous Testimonial"
+            >
+              <span className="material-symbols-outlined">chevron_left</span>
+            </button>
+            <button 
+              onClick={handleNextTestimonial}
+              className="w-12 h-12 border border-outline-variant hover:bg-primary hover:text-on-primary transition-all flex items-center justify-center cursor-pointer"
+              aria-label="Next Testimonial"
+            >
+              <span className="material-symbols-outlined">chevron_right</span>
+            </button>
+          </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-          {testimonials.map((test) => (
-            <div key={test.name} className="p-stack-lg border border-outline-variant bg-white flex flex-col justify-between">
-              <div>
-                <div className="flex text-primary-container mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <span key={i} className="material-symbols-outlined text-yellow-500" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                  ))}
-                </div>
-                <p className="font-body-md text-secondary italic mb-8">"{test.review}"</p>
-              </div>
-              <div className="flex items-center gap-4 border-t border-outline-variant pt-4">
-                <div className="w-12 h-12 bg-surface-container-high rounded-none flex items-center justify-center font-bold text-on-surface">
-                  {test.initials}
-                </div>
+          {[0, 1, 2].map((offset) => {
+            const index = (currentTestimonial + offset) % testimonials.length;
+            const test = testimonials[index];
+            return (
+              <div 
+                key={`${test.name}-${index}`}
+                className={`p-stack-lg border border-outline-variant bg-white flex flex-col justify-between transition-all duration-500 ${
+                  offset > 0 ? 'hidden md:flex' : 'flex'
+                }`}
+              >
                 <div>
-                  <p className="font-label-bold uppercase text-sm">{test.name}</p>
-                  <p className="text-label-sm text-secondary uppercase text-xs">{test.role}</p>
+                  <div className="flex text-primary-container mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className="material-symbols-outlined text-yellow-500" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                    ))}
+                  </div>
+                  <p className="font-body-md text-secondary italic mb-8">"{test.review}"</p>
+                </div>
+                <div className="flex items-center gap-4 border-t border-outline-variant pt-4">
+                  <div className="w-12 h-12 bg-surface-container-high rounded-none flex items-center justify-center font-bold text-on-surface">
+                    {test.initials}
+                  </div>
+                  <div>
+                    <p className="font-label-bold uppercase text-sm">{test.name}</p>
+                    <p className="text-label-sm text-secondary uppercase text-xs">{test.role}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Blog Section */}
-      <section className="py-section-gap bg-surface-container">
-        <div className="px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto">
-          <div className="mb-16">
-            <p className="text-primary font-label-bold uppercase mb-2">Industry Knowledge</p>
-            <h2 className="font-headline-lg text-3xl sm:text-5xl uppercase font-bold">
-              EXPERT HEAVY EQUIPMENT INSIGHTS
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-            {blogPosts.map((post) => (
-              <article key={post.title} className="group flex flex-col bg-white border border-outline-variant p-4">
-                <div className="h-64 overflow-hidden mb-6 relative">
-                  <img 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                    src={post.img} 
-                    alt={post.title} 
-                  />
-                </div>
-                <p className="text-label-sm text-primary uppercase font-bold mb-2 text-xs">{post.category} • {post.readTime}</p>
-                <h3 className="font-headline-sm text-xl uppercase mb-4 font-semibold group-hover:text-primary transition-colors">
-                  {post.title}
-                </h3>
-                <p className="font-body-md text-secondary mb-6 text-sm flex-grow">
-                  {post.desc}
-                </p>
-                <span className="font-label-bold uppercase border-b border-on-surface pb-1 group-hover:border-primary w-fit text-sm cursor-pointer">
-                  Read More
-                </span>
-              </article>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </section>
 

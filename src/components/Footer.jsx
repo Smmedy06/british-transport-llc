@@ -27,10 +27,10 @@ export default function Footer() {
         <div className="md:col-span-2">
           <h4 className="font-label-bold uppercase text-white mb-6">Equipment</h4>
           <ul className="space-y-3 font-body-md text-secondary-fixed-dim">
-            <li><Link to="/fleet" className="hover:text-primary-fixed transition-colors">Earthmoving</Link></li>
-            <li><Link to="/fleet" className="hover:text-primary-fixed transition-colors">Compaction</Link></li>
-            <li><Link to="/fleet" className="hover:text-primary-fixed transition-colors">Loaders</Link></li>
-            <li><Link to="/fleet" className="hover:text-primary-fixed transition-colors">Specialty Units</Link></li>
+            <li><Link to="/fleet" state={{ filterCategory: 'Excavator' }} className="hover:text-primary-fixed transition-colors">Excavators</Link></li>
+            <li><Link to="/fleet" state={{ filterCategory: 'Roller' }} className="hover:text-primary-fixed transition-colors">Rollers & Compactors</Link></li>
+            <li><Link to="/fleet" state={{ filterCategory: 'Shovel' }} className="hover:text-primary-fixed transition-colors">Loaders & Shovels</Link></li>
+            <li><Link to="/fleet" state={{ filterCategory: 'Crane' }} className="hover:text-primary-fixed transition-colors">Mobile Cranes</Link></li>
           </ul>
         </div>
 

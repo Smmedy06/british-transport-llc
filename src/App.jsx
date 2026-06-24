@@ -1,5 +1,6 @@
 import React from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import ScrollToTop from './components/ScrollToTop';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
@@ -13,6 +14,7 @@ import Contact from './pages/Contact';
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <div className="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-grow">

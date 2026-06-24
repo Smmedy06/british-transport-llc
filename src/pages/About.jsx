@@ -30,23 +30,7 @@ export default function About() {
     }
   ];
 
-  const leaders = [
-    {
-      name: "Ahmed Al-Sayed",
-      role: "Managing Director",
-      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuB3yr1jZ39Q6K4PZhIOWzeF6lX1-POqxwX59Fw3MzitD2culuVlQYudvLYXOl4xPY8Uzs0zfuwmrtRtYEv99D8PV3cbx4yELYrj-rkXsZ353pB1yJmyayOTxL01sA0Ms8LaHB4hiFJ5KOsSHEI68UgvhYXf3layoFpI4IQSBys50mo8vhz0kQScJO3Dk-V3gW4BO2wwT55D8npNYigpNsFV7858clePovWpeGd1WhgbxeiSAXgj_IDYEYhFSj5yqaLG1YxcJN9x6g"
-    },
-    {
-      name: "Michael Roberts",
-      role: "Operations Director",
-      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCeRJuSbhSfruV6otopzlWT9wRRRqv09oH6tSe0QB3rSsr8UhcEAfg-Xbktu5kLm1WeUNhVJBvPDXIDoFeT-Fv9u_16w9yych07mh-pRQNMxFdJUIihmT_TdiUBt2EbsnQl0so7ZAeTWMTj5M3iDLwtzvstdUDip0O-Pz-RXTgtUaF7Tlx8WYaPoqFQP6QAdnrKEOEbpHjPid4I4sAhtsw31eQC_VFarbOASlHgzDMmSPi0Df47Q62FIWtF21JA4I8T_gtVi15Usw"
-    },
-    {
-      name: "Fatima Hassan",
-      role: "Safety & Compliance Lead",
-      img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDPVrjyofc4WMZQQvHmh9C1V0cNWkbgz0MEOIuCIdTZBkyM69n-S1GeJUwYwlWPyRQnopvaWEltUwrMBMq7uHGCpTrMrm5iG-0qRBGCMk8J8G3ZBdVYAmnO7STS8aCL1S_HU3o6pVGKBcvGtm3f8Z4lqJs0SSpgA-rDMAmBW6LgOlYspAhJtpTh0bIpjVBf0M6UD_MUZcLX9RAV8rzZ1Ajs9qVJfV34XvmdbcKdsGXf0MUr6xU9LIU0aIfkJbg0QHbJ1mOHVjHIqA"
-    }
-  ];
+
 
   return (
     <div>
@@ -98,9 +82,9 @@ export default function About() {
               style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuAU-Uj1aTcBzzh2iKWqB5oB8QoxurkHZH2eyVqPo9u_EjYO7KDyZQyIEJ6wleQiTIDbV6uq_apI4aDfBvqru73ADuTRcafcNFPf9aFyW44s7ww2VomAe4sTzl0f4D-OFXplaclec13hqEhwtrTGlqy7Jsk1Hc18eCKP3LOXNquvgZ9o9aaBjIWxI4jzLENNqS_diaKpYibaUFEapU-ydL-lGBgS6cYZJ_vonDR4gY32ncuZyKJDjLlA8AHmGp5grMP4JRG79jddXA')" }}
             ></div>
           </div>
-          <div className="absolute -bottom-6 -left-6 bg-inverse-surface p-6 hidden md:block">
-            <p className="text-primary-container font-headline-md text-xl font-bold uppercase">ISO 9001:2015</p>
-            <p className="text-white font-label-bold uppercase text-xs">Certified Excellence</p>
+          <div className="absolute -bottom-4 left-6 md:-bottom-6 md:-left-6 bg-inverse-surface p-4 md:p-6 z-10">
+            <p className="text-primary-container font-headline-md text-lg md:text-xl font-bold uppercase">ISO 9001:2015</p>
+            <p className="text-white font-label-bold uppercase text-[10px] md:text-xs">Certified Excellence</p>
           </div>
         </div>
       </section>
@@ -115,43 +99,21 @@ export default function About() {
           <div className="relative">
             <div className="timeline-line"></div>
             {timeline.map((item, idx) => (
-              <div key={item.year} className={`relative grid grid-cols-1 md:grid-cols-2 gap-gutter mb-20 items-center`}>
-                <div className={`md:text-right ${idx % 2 === 0 ? '' : 'md:order-2 md:text-left'}`}>
+              <div key={item.year} className="relative grid grid-cols-1 md:grid-cols-2 gap-gutter mb-20 items-center">
+                {/* Absolute Centered Dot */}
+                <div className="absolute left-[20px] md:left-1/2 top-[24px] -translate-x-1/2 flex items-center justify-center w-6 h-6 z-10">
+                  <div className="w-4 h-4 bg-primary border-4 border-surface rounded-full shadow-sm"></div>
+                </div>
+
+                <div className={`pl-10 md:pl-0 md:text-right ${idx % 2 === 0 ? '' : 'md:order-2 md:text-left'}`}>
                   <div className="inline-block bg-primary text-on-primary font-headline-sm text-lg px-6 py-1 mb-4">{item.year}</div>
                   <h3 className="font-headline-md text-xl uppercase font-bold text-on-surface">{item.title}</h3>
                   <p className="font-body-md text-on-surface-variant mt-2 max-w-lg md:ml-auto md:mr-0">{item.desc}</p>
                 </div>
-                <div className={`hidden md:flex justify-start ${idx % 2 === 0 ? 'md:justify-start' : 'md:justify-end md:order-1'}`}>
-                  <div className={`w-4 h-4 bg-primary border-4 border-surface rounded-full z-10 ${idx % 2 === 0 ? '-ml-[10px]' : '-mr-[10px]'}`}></div>
-                </div>
+                <div className={idx % 2 === 0 ? 'md:order-2' : ''}></div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Leadership Section */}
-      <section className="py-section-gap px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto">
-        <h2 className="font-headline-lg text-3xl sm:text-5xl uppercase mb-20 text-center font-bold">Industrial Leadership</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-          {leaders.map((leader) => (
-            <div key={leader.name} className="border border-outline-variant group bg-white">
-              <div className="aspect-[4/5] relative overflow-hidden">
-                <div 
-                  className="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" 
-                  style={{ backgroundImage: `url('${leader.img}')` }}
-                ></div>
-              </div>
-              <div className="p-stack-lg">
-                <h4 className="font-headline-sm text-xl uppercase font-bold text-on-surface">{leader.name}</h4>
-                <p className="font-label-bold text-primary uppercase text-sm mt-1">{leader.role}</p>
-                <div className="mt-4 border-t border-outline-variant pt-4 flex gap-4 text-on-surface-variant">
-                  <span className="material-symbols-outlined cursor-pointer hover:text-primary">mail</span>
-                  <span className="material-symbols-outlined cursor-pointer hover:text-primary">share</span>
-                </div>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -190,9 +152,6 @@ export default function About() {
             <p className="font-body-lg text-white/70">
               Operating heavy road construction machinery requires a culture of extreme discipline. We maintain ISO certification across all equipment operations and invest heavily in operator training to ensure that safety remains our top priority.
             </p>
-            <button className="border-2 border-primary-container text-primary-container px-8 py-3 font-label-bold uppercase hover:bg-primary-container hover:text-black transition-colors duration-200">
-              Download Safety Report
-            </button>
           </div>
         </div>
       </section>
@@ -208,12 +167,6 @@ export default function About() {
                 <p className="font-body-md mt-2 text-sm text-secondary">
                   Al Asmawi Commercial Building, Office R-4,<br />
                   Ras Al Khor, Dubai, UAE
-                </p>
-              </div>
-              <div className="border-l-4 border-outline-variant pl-6">
-                <p className="font-label-bold uppercase text-on-surface-variant text-sm">Logistics Yard</p>
-                <p className="font-body-md mt-2 text-sm text-secondary">
-                  Ras Al Khor Industrial Area 2, Dubai, UAE
                 </p>
               </div>
               <div className="pt-8">

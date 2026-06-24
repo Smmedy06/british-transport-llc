@@ -8,7 +8,7 @@ export default {
     extend: {
       colors: {
         "on-secondary-fixed": "#1c1b1b",
-        "primary-fixed": "#ffe08f",
+        "primary-fixed": "#f5c200",
         "surface-container-highest": "#e2e2e2",
         "surface-container-low": "#f3f3f3",
         "background": "#f9f9f9",

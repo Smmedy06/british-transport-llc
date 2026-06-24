@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { useLocation, NavLink, Link } from 'react-router-dom';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,16 +36,13 @@ export default function Navbar() {
   return (
     <nav className={`sticky top-0 w-full z-50 bg-background/95 border-b border-outline-variant transition-all duration-300 ${isScrolled ? 'py-1.5 backdrop-blur-md shadow-md' : 'py-3'}`}>
       <div className="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-14 max-w-[1440px] mx-auto">
-        {/* Brand Logo & Name */}
-        <Link to="/" className="flex items-center gap-3" onClick={() => setIsOpen(false)}>
-          <img 
-            alt="British Transport Logo" 
-            className="h-10 w-auto object-contain" 
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0o4IpTXpPIwKX7iJnhqPrMHxhYo07KuaINTpLDqAYAD0MRheoklDyc3TxtN3GeraO-mOgUBW722AHw4bJfD_mdOeHb5PqsgDDelmq1knQWq8xmyMeKL97fA4gwiVcr6h9d5HMVhLeFPnIcwQfNLSSCqFvxRIWdu6tnjBGtth02Mg2rspmd1J2W0SKam5kuv0IXqPqHxylnyM-63Tb50PXs_eSTqXf-kEf56mtSE5BxQIpK2T0YEHukaPaQ89ehN7UxEjZU678Hw" 
+        {/* Brand Logo */}
+        <Link to="/" className="flex items-center" onClick={() => setIsOpen(false)}>
+          <img
+            alt="British Transport Logo"
+            className="h-22 w-auto object-contain"
+            src="/Logo.png"
           />
-          <span className="font-headline-sm text-headline-sm font-black text-on-surface uppercase tracking-tighter">
-            BRITISH TRANSPORT
-          </span>
         </Link>
 
         {/* Desktop Links */}
@@ -58,14 +60,14 @@ export default function Navbar() {
 
         {/* Action Button & Menu Toggle */}
         <div className="flex items-center gap-4">
-          <Link 
-            to="/contact" 
+          <Link
+            to="/contact"
             className="hidden sm:inline-block px-6 py-2 bg-primary-container text-on-primary-container font-label-bold uppercase hover:brightness-110 active:scale-95 transition-all"
           >
             Get Quote
           </Link>
-          
-          <button 
+
+          <button
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden text-on-surface p-2 focus:outline-none"
             aria-label="Toggle Menu"
@@ -77,9 +79,17 @@ export default function Navbar() {
         </div>
       </div>
 
+      {/* Mobile Backdrop Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 top-[56px] z-30 bg-black/40 backdrop-blur-sm md:hidden"
+          onClick={() => setIsOpen(false)}
+        ></div>
+      )}
+
       {/* Mobile Drawer */}
       {isOpen && (
-        <div className="md:hidden fixed top-16 left-0 w-full bg-background border-b border-outline-variant shadow-lg py-4 z-40 transition-all duration-300">
+        <div className="md:hidden fixed top-[56px] left-0 w-full bg-background border-b border-outline-variant shadow-lg py-4 z-40 transition-all duration-300">
           <div className="flex flex-col items-center gap-4">
             {navLinks.map((link) => (
               <NavLink
@@ -91,8 +101,8 @@ export default function Navbar() {
                 {link.name}
               </NavLink>
             ))}
-            <Link 
-              to="/contact" 
+            <Link
+              to="/contact"
               onClick={() => setIsOpen(false)}
               className="mt-2 w-4/5 text-center px-6 py-3 bg-primary-container text-on-primary-container font-label-bold uppercase hover:brightness-110 active:scale-95 transition-all"
             >

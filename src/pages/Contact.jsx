@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { fleetItems } from './Fleet';
 
 export default function Contact() {
   const location = useLocation();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    category: 'Excavators',
-    capacity: 'Standard (20 Ton)',
+    selectedEquipment: 'Custom',
+    customEquipment: '',
     units: 1,
     startDate: '',
     duration: 'Monthly (Long Term)',
@@ -22,27 +23,36 @@ export default function Contact() {
     if (location.state && location.state.selectedEquipment) {
       setFormData(prev => ({
         ...prev,
-        category: getCategoryFromEquipment(location.state.selectedEquipment),
-        requirements: `Inquiry regarding: ${location.state.selectedEquipment}`
+        selectedEquipment: location.state.selectedEquipment,
+        requirements: prev.requirements || `Inquiry regarding: ${location.state.selectedEquipment}`
       }));
     }
   }, [location]);
-
-  const getCategoryFromEquipment = (name) => {
-    if (name.includes('Excavator')) return 'Excavators';
-    if (name.includes('Grader')) return 'Motor Graders';
-    if (name.includes('Loader') || name.includes('Shovel')) return 'Wheel Loaders';
-    if (name.includes('Roller') || name.includes('Compactor')) return 'Road Rollers';
-    return 'Excavators';
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const validateStep = (currentStep) => {
+    if (currentStep === 1) {
+      return formData.companyName && formData.fullName && formData.email && formData.phone;
+    }
+    if (currentStep === 2) {
+      if (formData.selectedEquipment === 'Custom') {
+        return formData.customEquipment;
+      }
+      return formData.units >= 1;
+    }
+    return true;
+  };
+
   const nextStep = () => {
-    setStep(prev => Math.min(prev + 1, 3));
+    if (validateStep(step)) {
+      setStep(prev => Math.min(prev + 1, 3));
+    } else {
+      alert("Please fill out all required fields in this step before proceeding.");
+    }
   };
 
   const prevStep = () => {
@@ -51,11 +61,12 @@ export default function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Thank you, ${formData.fullName}! Your quote request has been sent successfully. A logistics manager will contact you at ${formData.phone} or ${formData.email} within 2 hours.`);
+    const equipmentName = formData.selectedEquipment === 'Custom' ? formData.customEquipment : formData.selectedEquipment;
+    alert(`Thank you, ${formData.fullName}! Your quote request for ${formData.selectedEquipment === 'Custom' ? '' : formData.units + 'x '}${equipmentName || 'machinery'} has been sent successfully. A logistics manager will contact you at ${formData.phone} or ${formData.email} within 2 hours.`);
     setStep(1);
     setFormData({
-      category: 'Excavators',
-      capacity: 'Standard (20 Ton)',
+      selectedEquipment: 'Custom',
+      customEquipment: '',
       units: 1,
       startDate: '',
       duration: 'Monthly (Long Term)',
@@ -89,142 +100,23 @@ export default function Contact() {
           <div className="bg-surface-container-lowest border border-outline-variant p-8">
             
             {/* Step Indicators */}
-            <div className="flex items-center justify-between mb-8 border-b border-outline-variant pb-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 border-b border-outline-variant pb-4 gap-4">
               <h2 className="font-headline-sm text-xl uppercase font-bold text-on-surface">Equipment Rental Request</h2>
-              <div className="flex gap-2">
-                <div className={`w-8 h-2 ${step >= 1 ? 'bg-primary' : 'bg-outline-variant'}`}></div>
-                <div className={`w-8 h-2 ${step >= 2 ? 'bg-primary' : 'bg-outline-variant'}`}></div>
-                <div className={`w-8 h-2 ${step >= 3 ? 'bg-primary' : 'bg-outline-variant'}`}></div>
+              <div className="flex items-center gap-2 sm:gap-3 text-xs font-label-bold uppercase tracking-wider text-outline">
+                <span className={step === 1 ? "text-primary font-bold" : "text-secondary"}>01. Business</span>
+                <span className="text-outline-variant">/</span>
+                <span className={step === 2 ? "text-primary font-bold" : "text-secondary"}>02. Equipments</span>
+                <span className="text-outline-variant">/</span>
+                <span className={step === 3 ? "text-primary font-bold" : "text-secondary"}>03. Location</span>
               </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               
-              {/* Step 1: Equipment Selection */}
+              {/* Step 1: Business Details */}
               {step === 1 && (
                 <div className="space-y-6">
-                  <h3 className="font-label-bold text-sm mb-4 text-primary uppercase font-bold">STEP 01: SELECT MACHINERY</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block font-label-bold mb-2 text-sm uppercase">Equipment Category</label>
-                      <select 
-                        name="category"
-                        value={formData.category}
-                        onChange={handleInputChange}
-                        className="w-full bg-surface border border-outline p-4 font-body-md"
-                      >
-                        <option>Excavators</option>
-                        <option>Road Rollers</option>
-                        <option>Motor Graders</option>
-                        <option>Wheel Loaders</option>
-                        <option>Bulldozers</option>
-                        <option>Boom Loaders</option>
-                        <option>Recoveries</option>
-                        <option>Mobile Cranes</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block font-label-bold mb-2 text-sm uppercase">Model / Capacity</label>
-                      <select 
-                        name="capacity"
-                        value={formData.capacity}
-                        onChange={handleInputChange}
-                        className="w-full bg-surface border border-outline p-4 font-body-md"
-                      >
-                        <option>Standard (10 - 25 Ton)</option>
-                        <option>Heavy Duty (25 - 50 Ton)</option>
-                        <option>Super Heavy (50+ Ton)</option>
-                        <option>Flexible / Request Advice</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block font-label-bold mb-2 text-sm uppercase">Number of Units</label>
-                    <input 
-                      type="number"
-                      name="units"
-                      min="1"
-                      value={formData.units}
-                      onChange={handleInputChange}
-                      className="w-full bg-surface border border-outline p-4 font-body-md"
-                    />
-                  </div>
-                  <button 
-                    type="button"
-                    onClick={nextStep}
-                    className="w-full md:w-auto px-8 py-4 bg-primary-container text-on-primary-container font-label-bold uppercase hover:brightness-110 font-bold transition-all"
-                  >
-                    Next: Duration &amp; Location
-                  </button>
-                </div>
-              )}
-
-              {/* Step 2: Duration & Location */}
-              {step === 2 && (
-                <div className="space-y-6">
-                  <h3 className="font-label-bold text-sm mb-4 text-primary uppercase font-bold">STEP 02: RENTAL DETAILS</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block font-label-bold mb-2 text-sm uppercase">Start Date</label>
-                      <input 
-                        type="date"
-                        name="startDate"
-                        value={formData.startDate}
-                        onChange={handleInputChange}
-                        className="w-full bg-surface border border-outline p-4 font-body-md"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block font-label-bold mb-2 text-sm uppercase">Estimated Duration</label>
-                      <select 
-                        name="duration"
-                        value={formData.duration}
-                        onChange={handleInputChange}
-                        className="w-full bg-surface border border-outline p-4 font-body-md"
-                      >
-                        <option>Daily</option>
-                        <option>Weekly (Project Rate)</option>
-                        <option>Monthly (Long Term)</option>
-                        <option>6+ Months Contract</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block font-label-bold mb-2 text-sm uppercase">Site Location (City/Area)</label>
-                    <input 
-                      type="text"
-                      name="location"
-                      value={formData.location}
-                      onChange={handleInputChange}
-                      placeholder="e.g., Ras Al Khor, Dubai or Mussafah, Abu Dhabi"
-                      className="w-full bg-surface border border-outline p-4 font-body-md"
-                      required
-                    />
-                  </div>
-                  <div className="flex gap-4">
-                    <button 
-                      type="button"
-                      onClick={prevStep}
-                      className="px-8 py-4 bg-secondary text-on-secondary font-label-bold uppercase font-bold"
-                    >
-                      Back
-                    </button>
-                    <button 
-                      type="button"
-                      onClick={nextStep}
-                      className="px-8 py-4 bg-primary-container text-on-primary-container font-label-bold uppercase font-bold hover:brightness-110 transition-all"
-                    >
-                      Next: Contact Info
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* Step 3: Contact Info */}
-              {step === 3 && (
-                <div className="space-y-6">
-                  <h3 className="font-label-bold text-sm mb-4 text-primary uppercase font-bold">STEP 03: CONTACT INFORMATION</h3>
+                  <h3 className="font-label-bold text-sm text-primary uppercase font-bold">STEP 01: BUSINESS DETAILS</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block font-label-bold mb-2 text-sm uppercase">Company Name</label>
@@ -239,7 +131,7 @@ export default function Contact() {
                       />
                     </div>
                     <div>
-                      <label className="block font-label-bold mb-2 text-sm uppercase">Full Name</label>
+                      <label className="block font-label-bold mb-2 text-sm uppercase">Contact Full Name</label>
                       <input 
                         type="text"
                         name="fullName"
@@ -277,18 +169,145 @@ export default function Contact() {
                       />
                     </div>
                   </div>
+                  <div className="pt-4">
+                    <button 
+                      type="button"
+                      onClick={nextStep}
+                      className="w-full md:w-auto px-8 py-4 bg-primary text-on-primary font-label-bold uppercase hover:bg-on-surface hover:text-white transition-all duration-300 font-bold"
+                    >
+                      Next: Equipment Details
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 2: Equipments */}
+              {step === 2 && (
+                <div className="space-y-6">
+                  <h3 className="font-label-bold text-sm text-primary uppercase font-bold">STEP 02: EQUIPMENT SPECIFICATIONS</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className={formData.selectedEquipment === 'Custom' ? "md:col-span-2" : ""}>
+                      <label className="block font-label-bold mb-2 text-sm uppercase">Select Machinery / Equipment</label>
+                      <select 
+                        name="selectedEquipment"
+                        value={formData.selectedEquipment}
+                        onChange={handleInputChange}
+                        className="w-full bg-surface border border-outline p-4 font-body-md"
+                        required
+                      >
+                        <option value="Custom">Custom / Personalized Equipment Inquiry</option>
+                        {fleetItems.map((item) => (
+                          <option key={item.id} value={item.name}>
+                            {item.name} ({item.brand})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {formData.selectedEquipment !== 'Custom' && (
+                      <div>
+                        <label className="block font-label-bold mb-2 text-sm uppercase">Number of Units</label>
+                        <input 
+                          type="number"
+                          name="units"
+                          min="1"
+                          value={formData.units}
+                          onChange={handleInputChange}
+                          className="w-full bg-surface border border-outline p-4 font-body-md"
+                          required
+                        />
+                      </div>
+                    )}
+
+                    {formData.selectedEquipment === 'Custom' && (
+                      <div className="md:col-span-2">
+                        <label className="block font-label-bold mb-2 text-sm uppercase">Specify Equipment Model / Details</label>
+                        <textarea 
+                          name="customEquipment"
+                          value={formData.customEquipment}
+                          onChange={handleInputChange}
+                          rows="5"
+                          placeholder="Please write a detailed description of the machinery type, size, requirements, or custom configurations you need..."
+                          className="w-full bg-surface border border-outline p-4 font-body-md"
+                          required
+                        ></textarea>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex gap-4 pt-4">
+                    <button 
+                      type="button"
+                      onClick={prevStep}
+                      className="px-8 py-4 bg-secondary text-on-secondary font-label-bold uppercase font-bold"
+                    >
+                      Back
+                    </button>
+                    <button 
+                      type="button"
+                      onClick={nextStep}
+                      className="px-8 py-4 bg-primary text-on-primary font-label-bold uppercase font-bold hover:bg-on-surface hover:text-white transition-all duration-300"
+                    >
+                      Next: Location &amp; Dates
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 3: Location */}
+              {step === 3 && (
+                <div className="space-y-6">
+                  <h3 className="font-label-bold text-sm text-primary uppercase font-bold">STEP 03: RENTAL LOCATION &amp; DURATION</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block font-label-bold mb-2 text-sm uppercase">Estimated Start Date</label>
+                      <input 
+                        type="date"
+                        name="startDate"
+                        value={formData.startDate}
+                        onChange={handleInputChange}
+                        className="w-full bg-surface border border-outline p-4 font-body-md"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-label-bold mb-2 text-sm uppercase">Rental Duration</label>
+                      <select 
+                        name="duration"
+                        value={formData.duration}
+                        onChange={handleInputChange}
+                        className="w-full bg-surface border border-outline p-4 font-body-md"
+                      >
+                        <option>Daily</option>
+                        <option>Weekly (Project Rate)</option>
+                        <option>Monthly (Long Term)</option>
+                        <option>6+ Months Contract</option>
+                      </select>
+                    </div>
+                  </div>
                   <div>
-                    <label className="block font-label-bold mb-2 text-sm uppercase">Additional Requirements / Site Specifics</label>
+                    <label className="block font-label-bold mb-2 text-sm uppercase">Project Site Location (City / Area)</label>
+                    <input 
+                      type="text"
+                      name="location"
+                      value={formData.location}
+                      onChange={handleInputChange}
+                      placeholder="e.g., Ras Al Khor, Dubai or Mussafah, Abu Dhabi"
+                      className="w-full bg-surface border border-outline p-4 font-body-md"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-label-bold mb-2 text-sm uppercase">Specific Requirements / Site Conditions</label>
                     <textarea 
                       name="requirements"
                       value={formData.requirements}
                       onChange={handleInputChange}
                       rows="4"
-                      placeholder="Specify logistics needs, operator support details, or machine rigging requirements..."
+                      placeholder="Please specify logistics needs, operator requirements, ground conditions, or shift details..."
                       className="w-full bg-surface border border-outline p-4 font-body-md"
                     ></textarea>
                   </div>
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 pt-4">
                     <button 
                       type="button"
                       onClick={prevStep}
@@ -298,15 +317,32 @@ export default function Contact() {
                     </button>
                     <button 
                       type="submit"
-                      className="px-12 py-4 bg-primary text-on-primary font-label-bold uppercase font-bold hover:bg-on-surface transition-all"
+                      className="px-12 py-4 bg-primary text-on-primary font-label-bold uppercase font-bold hover:bg-on-surface hover:text-white transition-all duration-300"
                     >
                       Submit Quote Request
                     </button>
                   </div>
                 </div>
               )}
-
             </form>
+          </div>
+
+          {/* Interactive Google Map Location */}
+          <div className="mt-8 bg-surface-container-lowest border border-outline-variant p-8">
+            <h3 className="font-headline-sm text-lg uppercase mb-4 border-b-2 border-primary pb-2 font-bold text-on-surface flex items-center gap-2">
+              <span className="material-symbols-outlined text-primary">location_on</span>
+              OUR HQ LOCATION ON THE MAP
+            </h3>
+            <div className="overflow-hidden border border-outline-variant bg-[#1c1c1c]">
+              <iframe 
+                src="https://maps.google.com/maps?q=Al%20Asmawi%20Commercial%20Building%2C%20Ras%20Al%20Khor%20Industrial%20Area%202%2C%20Dubai&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+                className="w-full h-80 border-none" 
+                allowFullScreen="" 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+                title="British Transport LLC Location Map"
+              ></iframe>
+            </div>
           </div>
         </div>
 
@@ -339,6 +375,14 @@ export default function Contact() {
                   <p className="font-label-sm text-xs text-tertiary-fixed-dim uppercase tracking-wider">Logistics Hotline 2</p>
                   <p className="font-headline-sm text-lg text-white font-bold">+971 50 948 7660</p>
                 </div>
+                <div>
+                  <p className="font-label-sm text-xs text-tertiary-fixed-dim uppercase tracking-wider">Email Support</p>
+                  <p className="font-headline-sm text-base sm:text-lg text-white font-bold">
+                    <a href="mailto:info@britishtransportllc.ae" className="hover:text-primary-container transition-colors">
+                      info@britishtransportllc.ae
+                    </a>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -367,34 +411,6 @@ export default function Contact() {
 
         </div>
 
-      </section>
-
-      {/* Operations Directory */}
-      <section className="bg-surface-container py-section-gap px-margin-mobile md:px-margin-desktop">
-        <div className="max-w-[1440px] mx-auto space-y-8">
-          <h2 className="font-headline-md text-2xl md:text-3xl uppercase text-center font-bold">Office Directory</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
-            
-            <div className="bg-white p-8 border-l-4 border-primary shadow-sm space-y-4">
-              <h3 className="font-headline-sm text-xl uppercase font-bold">Dubai HQ Office</h3>
-              <p className="text-sm text-secondary">Serving Dubai, Sharjah, Ajman, and all Northern Emirates.</p>
-              <div className="space-y-2 text-sm border-t border-outline-variant pt-4">
-                <p className="flex gap-2"><span className="material-symbols-outlined text-xs">mail</span> <strong>info@britishtransport.ae</strong></p>
-                <p className="flex gap-2"><span className="material-symbols-outlined text-xs">schedule</span> <strong>Mon - Sat: 9:00 AM - 10:00 PM</strong></p>
-              </div>
-            </div>
-
-            <div className="bg-white p-8 border-l-4 border-primary shadow-sm space-y-4">
-              <h3 className="font-headline-sm text-xl uppercase font-bold">Abu Dhabi Logistics</h3>
-              <p className="text-sm text-secondary">Mussafah Industrial Hub supporting capital infrastructure operations.</p>
-              <div className="space-y-2 text-sm border-t border-outline-variant pt-4">
-                <p className="flex gap-2"><span className="material-symbols-outlined text-xs">mail</span> <strong>abudhabi@britishtransport.ae</strong></p>
-                <p className="flex gap-2"><span className="material-symbols-outlined text-xs">schedule</span> <strong>Mon - Sat: 9:00 AM - 10:00 PM</strong></p>
-              </div>
-            </div>
-
-          </div>
-        </div>
       </section>
 
     </div>

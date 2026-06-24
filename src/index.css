@@ -43,7 +43,7 @@
 
   /* Colors */
   --color-on-secondary-fixed: #1c1b1b;
-  --color-primary-fixed: #ffe08f;
+  --color-primary-fixed: #f5c200;
   --color-surface-container-highest: #e2e2e2;
   --color-surface-container-low: #f3f3f3;
   --color-background: #f9f9f9;
@@ -187,4 +187,12 @@ input:focus, select:focus, textarea:focus {
     display: block;
     opacity: 1;
     transform: translateX(0);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
