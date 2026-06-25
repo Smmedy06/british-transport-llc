@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { fleetItems } from './Fleet';
+import useSEO from '../hooks/useSEO';
 
 export default function Contact() {
   const location = useLocation();
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  useSEO({
+    title: "Request a Rental Quote | Contact British Transport L.L.C. Dubai",
+    description: "Need a heavy equipment quote? Contact our logistics desk in Dubai. Request standard quotes online for excavators, graders, and rollers, or message via WhatsApp.",
+    keywords: "heavy equipment rental quote, contact british transport dubai, grader rental pricing, roll hire uae, logistics hotline, info@britishtransportllc.ae"
+  });
   const [formData, setFormData] = useState({
     selectedEquipment: 'Custom',
     customEquipment: '',

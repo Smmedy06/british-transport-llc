@@ -1,7 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import useSEO from '../hooks/useSEO';
 
 export default function About() {
+  useSEO({
+    title: "About Us | British Transport L.L.C. | Heavy Machinery Supplier UAE",
+    description: "Learn about British Transport L.L.C., a certified heavy equipment rental supplier in Dubai since 2011. Operating a massive fleet of grading, compacting, and excavation machinery.",
+    keywords: "about british transport llc, heavy machinery supplier dubai, trade license 660839, ras al khor logistics yard, ISO 9001:2015, safety certified construction operators"
+  });
   const stats = [
     { value: "500+", label: "Fleet Units" },
     { value: "1000+", label: "Projects Completed" }

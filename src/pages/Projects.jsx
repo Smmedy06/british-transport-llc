@@ -1,6 +1,12 @@
 import React, { useState, useMemo } from 'react';
+import useSEO from '../hooks/useSEO';
 
 export default function Projects() {
+  useSEO({
+    title: "Completed Construction Projects | British Transport L.L.C. UAE",
+    description: "Explore our portfolio of infrastructure projects powered by British Transport L.L.C., including Expo 2020 Dubai site prep, Khalifa Port, and highway resurfacing.",
+    keywords: "roadworks dubai, infrastructure projects UAE, Jebel Ali Terminal, RTA Metro site preparation, nakheel sports pitch grading, earthmoving project list"
+  });
   const [currentPerspective, setCurrentPerspective] = useState(0);
   const projectGallery = [
     {

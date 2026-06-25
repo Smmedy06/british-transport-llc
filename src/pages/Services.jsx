@@ -1,7 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import useSEO from '../hooks/useSEO';
 
 export default function Services() {
+  useSEO({
+    title: "Road Construction & Transportation Services | Logistics UAE",
+    description: "Professional road works site prep, mass earthmoving, marine cargo hauling, and heavy logistics transport. Certified operators and 24/7 site maintenance support.",
+    keywords: "road construction services dubai, heavy haulage transportation uae, earthworks logistics, flatbed loader service, 24/7 site support, lowbed transport Abu Dhabi"
+  });
   const steps = [
     {
       num: "01",

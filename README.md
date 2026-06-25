@@ -16,7 +16,7 @@ An enterprise-grade, highly interactive heavy machinery rental and logistics pla
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 *   **Premium Industrial Design System**: Features a high-contrast industrial theme with a dark-gold/olive color palette, robust typography, custom responsive spacing, and micro-interactions.
 *   **Dynamic Fleet Catalog**: A searchable machinery list with instant checkbox-based category filtering (Excavators, Rollers & Compactors, Loaders & Shovels, Mobile Cranes), weight class filters, and brand tags.

@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import useSEO from '../hooks/useSEO';
 
 export default function Home() {
+  useSEO({
+    title: "British Transport L.L.C. | Heavy Equipment Rental Dubai & Abu Dhabi, UAE",
+    description: "British Transport L.L.C. is your trusted partner for certified heavy equipment rental in the UAE. Hire excavators, motor graders, rollers, and shovels for roadworks and site logistics.",
+    keywords: "heavy equipment rental dubai, machinery rental uae, motor grader rental, road roller rental, excavator rental dubai, project logistics uae, abnormal load transport"
+  });
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const brandLogos = ['VOLVO', 'CATERPILLAR', 'KOMATSU', 'SANY', 'LIEBHERR'];
 
@@ -21,7 +27,7 @@ export default function Home() {
       power: "634 kW",
       width: "27.2 m³ blade",
       weight: "106,614 kg",
-      img: "/images/fleet/caterpillar_cat_d11_crawler_dozer.jpg",
+      img: "/images/fleet/caterpillar_cat_d11_crawler_dozer.webp",
       category: "Earthmoving"
     },
     {
@@ -29,7 +35,7 @@ export default function Home() {
       power: "Tier 4 Final",
       width: "2.1 m drum",
       weight: "10,500 KG",
-      img: "/images/fleet/caterpillar_vibratory_roller_cs54b.jpg",
+      img: "/images/fleet/caterpillar_vibratory_roller_cs54b.webp",
       category: "Compaction"
     },
     {
@@ -45,7 +51,7 @@ export default function Home() {
       power: "40 Tons cap.",
       width: "15.4 m reach",
       weight: "38,500 kg",
-      img: "/images/fleet/caterpillar_cat_mh3040_material_handler_crane.jpg",
+      img: "/images/fleet/caterpillar_cat_mh3040_material_handler_crane.webp",
       category: "Logistics"
     },
     {
@@ -53,7 +59,7 @@ export default function Home() {
       power: "39,000 kg pay.",
       width: "24 m³ volume",
       weight: "30,100 kg",
-      img: "/images/fleet/volvo_a40.jpg",
+      img: "/images/fleet/volvo_a40.webp",
       category: "Logistics"
     }
   ];
@@ -169,7 +175,7 @@ export default function Home() {
       <section className="relative h-[90vh] min-h-[600px] flex items-center justify-start overflow-hidden pt-20 md:pt-24 pb-28 md:pb-36">
         <div 
           className="absolute inset-0 bg-cover bg-center" 
-          style={{ backgroundImage: "url('/hero_section_bg.png')" }}
+          style={{ backgroundImage: "url('/hero_section_bg.webp')" }}
         ></div>
         <div className="absolute inset-0 hero-gradient"></div>
         <div className="relative z-10 px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto w-full">

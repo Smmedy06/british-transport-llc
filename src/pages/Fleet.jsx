@@ -1,7 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import useSEO from '../hooks/useSEO';
 
-export const fleetItems = [
+const rawFleetItems = [
     {
         "id": 1,
         "name": "CAT 308 CR Mini Excavator",
@@ -648,11 +649,23 @@ export const fleetItems = [
     }
 ];
 
+export const fleetItems = rawFleetItems.map(item => ({
+  ...item,
+  img: item.img.startsWith('/images/fleet/') ? item.img.replace('.jpg', '.webp') : item.img
+}));
+
 export default function Fleet() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  useSEO({
+    title: "Heavy Equipment Rental Fleet | Excavator, Roller, Loader & Crane Hire Dubai",
+    description: "Explore our extensive fleet of Caterpillar, Komatsu, and Volvo machinery. Rent heavy excavators, vibratory rollers, loaders, bulldozers, and mobile cranes in the UAE.",
+    keywords: "heavy machinery fleet dubai, caterpillar excavator hire, komatsu dozer rental, volvo articulated hauler uae, mobile crane rental rates, loader rental dubai"
+  });
+
   const [search, setSearch] = useState('');
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedWeights, setSelectedWeights] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
@@ -737,6 +750,18 @@ export default function Fleet() {
     };
   }, [selectedProductForModal]);
 
+  // Lock scroll when mobile filters are open
+  useEffect(() => {
+    if (showMobileFilters) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showMobileFilters]);
+
   const filteredFleet = useMemo(() => {
     return fleetItems.filter(item => {
       const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase()) || 
@@ -788,74 +813,124 @@ export default function Fleet() {
       {/* Main Content Area */}
       <main className="max-w-[1440px] mx-auto px-margin-mobile md:px-margin-desktop pb-section-gap flex flex-col lg:flex-row gap-gutter">
         
-        {/* Sidebar Filters */}
-        <aside className="w-full lg:w-72 flex-shrink-0 space-y-stack-lg">
-          
-          {/* Category Filter */}
-          <div className="border border-outline-variant bg-white p-6">
-            <h3 className="font-headline-sm text-lg uppercase mb-stack-md border-b-2 border-primary pb-2 font-bold">Equipment Type</h3>
-            <div className="space-y-3 pr-2">
-              {categories.map((cat) => (
-                <label key={cat} className="flex items-center gap-3 cursor-pointer group">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedCategories.includes(cat)}
-                    onChange={() => handleCategoryChange(cat)}
-                    className="sr-only" 
-                  />
-                  <div className={`w-5 h-5 border flex items-center justify-center transition-all ${selectedCategories.includes(cat) ? 'border-primary bg-primary text-white' : 'border-outline bg-white group-hover:border-primary'}`}>
-                    {selectedCategories.includes(cat) && (
-                      <span className="material-symbols-outlined text-sm font-black select-none" style={{ fontSize: '14px' }}>check</span>
-                    )}
-                  </div>
-                  <span className={`font-label-bold text-sm uppercase group-hover:text-primary transition-colors ${selectedCategories.includes(cat) ? 'text-primary font-bold' : ''}`}>
-                    {cat === 'Recovery' ? 'Recovery' : `${cat}s`}
-                  </span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          {/* Weight Class Filter */}
-          <div className="border border-outline-variant bg-white p-6">
-            <h3 className="font-headline-sm text-lg uppercase mb-stack-md border-b-2 border-primary pb-2 font-bold">Operating Weight</h3>
-            <div className="space-y-2">
-              {weightClasses.map((wt) => (
-                <button 
-                  key={wt} 
-                  onClick={() => handleWeightChange(wt)}
-                  className={`w-full text-left p-2 border font-label-bold text-xs uppercase transition-all ${selectedWeights.includes(wt) ? 'border-primary bg-primary text-on-primary font-bold' : 'border-outline-variant bg-surface hover:bg-primary-fixed-dim'}`}
-                >
-                  {wt}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Brands Filter */}
-          <div className="border border-outline-variant bg-white p-6">
-            <h3 className="font-headline-sm text-lg uppercase mb-stack-md border-b-2 border-primary pb-2 font-bold">Top Brands</h3>
-            <div className="grid grid-cols-2 gap-2">
-              {brands.map((brand) => (
-                <div 
-                  key={brand} 
-                  onClick={() => handleBrandChange(brand)}
-                  className={`border p-2 flex items-center justify-center cursor-pointer transition-all ${selectedBrands.includes(brand) ? 'border-primary bg-primary/10 font-bold text-primary' : 'border-outline-variant grayscale hover:grayscale-0'}`}
-                >
-                  <span className="font-bold text-[10px] uppercase text-center">{brand}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Reset Filters */}
+        {/* Mobile Filter Toggle Button */}
+        <div className="lg:hidden w-full mb-2">
           <button 
-            onClick={clearFilters}
-            className="w-full py-3 bg-on-surface text-white font-label-bold text-sm uppercase hover:bg-primary transition-colors flex items-center justify-center gap-2 cursor-pointer"
+            onClick={() => setShowMobileFilters(!showMobileFilters)}
+            className="w-full py-3 bg-primary text-on-primary font-label-bold uppercase text-sm font-bold flex items-center justify-center gap-2 cursor-pointer border border-primary hover:bg-on-surface hover:text-white transition-all"
           >
-            <span className="material-symbols-outlined text-sm">restart_alt</span>
-            Reset Filters
+            <span className="material-symbols-outlined text-lg">{showMobileFilters ? 'close' : 'tune'}</span>
+            {showMobileFilters ? 'Hide Filters' : 'Show Filters'}
+            {(selectedCategories.length > 0 || selectedWeights.length > 0 || selectedBrands.length > 0) && (
+              <span className="bg-white text-primary w-5 h-5 rounded-full text-xs flex items-center justify-center font-bold">
+                {selectedCategories.length + selectedWeights.length + selectedBrands.length}
+              </span>
+            )}
           </button>
+        </div>
+
+        {/* Mobile Filters Drawer Overlay */}
+        {showMobileFilters && (
+          <div 
+            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm lg:hidden transition-opacity duration-300"
+            onClick={() => setShowMobileFilters(false)}
+          />
+        )}
+
+        {/* Sidebar Filters (Static on Desktop, Slide-over Drawer on Mobile) */}
+        <aside className={`
+          w-full lg:w-72 flex-shrink-0
+          fixed lg:static inset-y-0 left-0 z-50 max-w-xs lg:max-w-none bg-white lg:bg-transparent p-6 lg:p-0 shadow-2xl lg:shadow-none transform lg:transform-none transition-transform duration-300 ease-in-out overflow-y-auto lg:overflow-y-visible flex flex-col
+          ${showMobileFilters ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        `}>
+          {/* Drawer Header (Mobile only) */}
+          <div className="flex items-center justify-between border-b border-outline-variant pb-4 mb-6 lg:hidden">
+            <h2 className="font-headline-sm text-xl uppercase font-bold text-on-surface">Filters</h2>
+            <button 
+              onClick={() => setShowMobileFilters(false)}
+              className="w-10 h-10 flex items-center justify-center text-on-surface hover:text-primary transition-colors cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-2xl font-bold">close</span>
+            </button>
+          </div>
+
+          <div className="space-y-stack-lg flex-grow overflow-y-auto pr-2 pb-24 lg:pb-0">
+            {/* Category Filter */}
+            <div className="border border-outline-variant bg-white p-6">
+              <h3 className="font-headline-sm text-lg uppercase mb-stack-md border-b-2 border-primary pb-2 font-bold">Equipment Type</h3>
+              <div className="space-y-3 pr-2">
+                {categories.map((cat) => (
+                  <label key={cat} className="flex items-center gap-3 cursor-pointer group">
+                    <input 
+                      type="checkbox" 
+                      checked={selectedCategories.includes(cat)}
+                      onChange={() => handleCategoryChange(cat)}
+                      className="sr-only" 
+                    />
+                    <div className={`w-5 h-5 border flex items-center justify-center transition-all ${selectedCategories.includes(cat) ? 'border-primary bg-primary text-white' : 'border-outline bg-white group-hover:border-primary'}`}>
+                      {selectedCategories.includes(cat) && (
+                        <span className="material-symbols-outlined text-sm font-black select-none" style={{ fontSize: '14px' }}>check</span>
+                      )}
+                    </div>
+                    <span className={`font-label-bold text-sm uppercase group-hover:text-primary transition-colors ${selectedCategories.includes(cat) ? 'text-primary font-bold' : ''}`}>
+                      {cat === 'Recovery' ? 'Recovery' : `${cat}s`}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Weight Class Filter */}
+            <div className="border border-outline-variant bg-white p-6">
+              <h3 className="font-headline-sm text-lg uppercase mb-stack-md border-b-2 border-primary pb-2 font-bold">Operating Weight</h3>
+              <div className="space-y-2">
+                {weightClasses.map((wt) => (
+                  <button 
+                    key={wt} 
+                    onClick={() => handleWeightChange(wt)}
+                    className={`w-full text-left p-2 border font-label-bold text-xs uppercase transition-all ${selectedWeights.includes(wt) ? 'border-primary bg-primary text-on-primary font-bold' : 'border-outline-variant bg-surface hover:bg-primary-fixed-dim'}`}
+                  >
+                    {wt}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Brands Filter */}
+            <div className="border border-outline-variant bg-white p-6">
+              <h3 className="font-headline-sm text-lg uppercase mb-stack-md border-b-2 border-primary pb-2 font-bold">Top Brands</h3>
+              <div className="grid grid-cols-2 gap-2">
+                {brands.map((brand) => (
+                  <div 
+                    key={brand} 
+                    onClick={() => handleBrandChange(brand)}
+                    className={`border p-2 flex items-center justify-center cursor-pointer transition-all ${selectedBrands.includes(brand) ? 'border-primary bg-primary/10 font-bold text-primary' : 'border-outline-variant grayscale hover:grayscale-0'}`}
+                  >
+                    <span className="font-bold text-[10px] uppercase text-center">{brand}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Reset Filters */}
+            <button 
+              onClick={clearFilters}
+              className="w-full py-3 bg-on-surface text-white font-label-bold text-sm uppercase hover:bg-primary transition-colors flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-sm">restart_alt</span>
+              Reset Filters
+            </button>
+          </div>
+
+          {/* View Results Button (Sticky Mobile Bottom) */}
+          <div className="lg:hidden absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-outline-variant z-10 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
+            <button
+              onClick={() => setShowMobileFilters(false)}
+              className="w-full py-3.5 bg-primary text-on-primary font-label-bold uppercase text-sm font-bold flex items-center justify-center gap-2 cursor-pointer border border-primary hover:bg-on-surface hover:text-white transition-all shadow-md"
+            >
+              View Results ({filteredFleet.length} Units)
+            </button>
+          </div>
         </aside>
 
         {/* Product Grid Area */}
@@ -889,7 +964,7 @@ export default function Fleet() {
                       <img 
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                         src={item.img} 
-                        alt={item.name} 
+                        alt={`${item.brand} ${item.name} heavy machinery for rent in UAE`} 
                       />
                       <div className={`absolute top-4 left-4 px-3 py-1 font-label-bold text-xs uppercase ${item.status === 'Ready to Ship' ? 'bg-primary text-on-primary' : item.status === 'Reserved' ? 'bg-error text-white' : 'bg-on-surface text-white'}`}>
                         {item.status}
@@ -933,35 +1008,63 @@ export default function Fleet() {
 
               {/* Pagination Controls */}
               {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-2 mt-12 border-t border-outline-variant pt-8">
-                  <button
-                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                    disabled={currentPage === 1}
-                    className="px-4 py-2 border border-outline-variant text-sm font-label-bold uppercase transition-all disabled:opacity-40 disabled:hover:bg-transparent hover:bg-primary hover:text-on-primary cursor-pointer disabled:cursor-not-allowed"
-                  >
-                    Previous
-                  </button>
-                  
-                  {[...Array(totalPages)].map((_, index) => {
-                    const pageNum = index + 1;
-                    return (
-                      <button
-                        key={pageNum}
-                        onClick={() => setCurrentPage(pageNum)}
-                        className={`w-10 h-10 border text-sm font-label-bold transition-all cursor-pointer ${currentPage === pageNum ? 'border-primary bg-primary text-on-primary font-bold' : 'border-outline-variant hover:bg-primary-fixed-dim'}`}
-                      >
-                        {pageNum}
-                      </button>
-                    );
-                  })}
-                  
-                  <button
-                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                    className="px-4 py-2 border border-outline-variant text-sm font-label-bold uppercase transition-all disabled:opacity-40 disabled:hover:bg-transparent hover:bg-primary hover:text-on-primary cursor-pointer disabled:cursor-not-allowed"
-                  >
-                    Next
-                  </button>
+                <div className="flex justify-center items-center gap-2 mt-12 border-t border-outline-variant pt-8 w-full">
+                  {/* Desktop Pagination */}
+                  <div className="hidden sm:flex justify-center items-center gap-2 w-full">
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                      className="px-4 py-2 border border-outline-variant text-sm font-label-bold uppercase transition-all disabled:opacity-40 disabled:hover:bg-transparent hover:bg-primary hover:text-on-primary cursor-pointer disabled:cursor-not-allowed flex items-center justify-center"
+                    >
+                      Previous
+                    </button>
+                    
+                    {[...Array(totalPages)].map((_, index) => {
+                      const pageNum = index + 1;
+                      return (
+                        <button
+                          key={pageNum}
+                          onClick={() => setCurrentPage(pageNum)}
+                          className={`w-10 h-10 border text-sm font-label-bold transition-all cursor-pointer ${currentPage === pageNum ? 'border-primary bg-primary text-on-primary font-bold' : 'border-outline-variant hover:bg-primary-fixed-dim'}`}
+                        >
+                          {pageNum}
+                        </button>
+                      );
+                    })}
+                    
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      disabled={currentPage === totalPages}
+                      className="px-4 py-2 border border-outline-variant text-sm font-label-bold uppercase transition-all disabled:opacity-40 disabled:hover:bg-transparent hover:bg-primary hover:text-on-primary cursor-pointer disabled:cursor-not-allowed flex items-center justify-center"
+                    >
+                      Next
+                    </button>
+                  </div>
+
+                  {/* Mobile Pagination */}
+                  <div className="flex sm:hidden justify-between items-center w-full px-4">
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                      className="w-12 h-12 border border-outline-variant transition-all disabled:opacity-40 hover:bg-primary hover:text-on-primary cursor-pointer disabled:cursor-not-allowed flex items-center justify-center bg-white"
+                      aria-label="Previous Page"
+                    >
+                      <span className="material-symbols-outlined text-xl" style={{ fontSize: '24px' }}>chevron_left</span>
+                    </button>
+                    
+                    <span className="text-sm font-label-bold uppercase tracking-wider text-on-surface">
+                      Page {currentPage} of {totalPages}
+                    </span>
+                    
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      disabled={currentPage === totalPages}
+                      className="w-12 h-12 border border-outline-variant transition-all disabled:opacity-40 hover:bg-primary hover:text-on-primary cursor-pointer disabled:cursor-not-allowed flex items-center justify-center bg-white"
+                      aria-label="Next Page"
+                    >
+                      <span className="material-symbols-outlined text-xl" style={{ fontSize: '24px' }}>chevron_right</span>
+                    </button>
+                  </div>
                 </div>
               )}
             </>
@@ -990,11 +1093,11 @@ export default function Fleet() {
 
             {/* Left Column: Image and Status */}
             <div className="w-full md:w-1/2 relative bg-[#121212] flex items-center justify-center">
-              <img 
-                className="w-full h-full object-cover min-h-[250px] md:min-h-[450px]" 
-                src={selectedProductForModal.img} 
-                alt={selectedProductForModal.name} 
-              />
+               <img 
+                 className="w-full h-full object-cover min-h-[250px] md:min-h-[450px]" 
+                 src={selectedProductForModal.img} 
+                 alt={`${selectedProductForModal.brand} ${selectedProductForModal.name} heavy equipment rental Dubai`} 
+               />
               <div className={`absolute top-4 left-4 px-3 py-1 font-label-bold text-xs uppercase ${selectedProductForModal.status === 'Ready to Ship' ? 'bg-[#f5c200] text-[#1a1c1c]' : selectedProductForModal.status === 'Reserved' ? 'bg-error text-white' : 'bg-white text-black'}`}>
                 {selectedProductForModal.status}
               </div>

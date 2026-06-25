@@ -3,14 +3,99 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="/Fav.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Favicons and Mobile Touch Icons -->
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <!-- Preload Critical Hero Image for Instant Loading -->
+  <link rel="preload" as="image" href="/hero_section_bg.webp" type="image/webp" />
 
   <title>British Transport L.L.C. | Heavy Equipment Rental & Site Logistics UAE</title>
   <meta name="description"
     content="British Transport L.L.C. is a premier heavy machinery rental and project logistics provider in Dubai, Abu Dhabi, and across the UAE. Rollers, graders, loaders, and excavators built for demanding construction sites." />
   <meta name="keywords"
     content="heavy equipment rental dubai, machinery rental uae, motor grader rental, road roller rental, excavator rental dubai, project logistics uae, abnormal load transport" />
+
+  <!-- Structured Data JSON-LD (SEO LocalBusiness schema) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "British Transport L.L.C.",
+      "image": "https://britishtransportllc.vercel.app/Logo.png",
+      "@id": "https://britishtransportllc.vercel.app/#organization",
+      "url": "https://britishtransportllc.vercel.app",
+      "telephone": "+971507787551",
+      "priceRange": "$$$",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Al Asmawi Commercial Building, Office R-4, Ras Al Khor",
+        "addressLocality": "Dubai",
+        "postalCode": "76980",
+        "addressCountry": "AE"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 25.1872,
+        "longitude": 55.3585
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+          ],
+          "opens": "09:00",
+          "closes": "22:00"
+        }
+      ],
+      "sameAs": [
+        "https://github.com/Smmedy06/british-transport-llc"
+      ],
+      "areaServed": [
+        {
+          "@type": "AdministrativeArea",
+          "name": "Dubai"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Abu Dhabi"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Sharjah"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Ajman"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Umm Al Quwain"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Ras Al Khaimah"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Fujairah"
+        }
+      ]
+    }
+  </script>
 </head>
 
 <body class="bg-background text-on-surface font-body-md overflow-x-hidden">
